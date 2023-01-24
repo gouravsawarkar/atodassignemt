@@ -18,7 +18,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         if (data.status) {
           emit(SignUpDone(data: data));
         } else {
-          emit(SignUpError(error: 'User Not Found'));
+          emit(SignUpError(error: data.msg));
         }
       } catch (e) {
         emit(SignUpError(error: e.toString()));

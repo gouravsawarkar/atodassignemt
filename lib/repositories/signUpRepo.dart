@@ -16,13 +16,14 @@ class SignUpRepo {
       "country": country
     });
     print(body);
+
     http.Response r = await http.post(Uri.parse(url),
         headers: {
           'accept': 'application/json',
           'Content-Type': 'application/json',
         },
         body: body);
-    print(r.body);
+
     if (r.statusCode == 201) {
       var obj = json.decode(r.body);
 
@@ -30,7 +31,7 @@ class SignUpRepo {
       return data;
     } else {
       var obj = json.decode(r.body);
-
+      print(obj['message']);
       return UserDataModel(
           status: false,
           msg: obj['message'],

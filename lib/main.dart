@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:a_to_d_assignemt/businessLogic/cityIndex/cubit/city_index_cubit.dart';
 import 'package:a_to_d_assignemt/businessLogic/cityList/bloc/city_list_bloc.dart';
 import 'package:a_to_d_assignemt/businessLogic/forcast/bloc/forcast_bloc.dart';
@@ -18,11 +20,18 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final pref = await SharedPreferences.getInstance();
   final setHome = pref.getBool('setHome') ?? true;
+    HttpOverrides.global = new MyHttpOverrides();
   runApp(MyApp(
     setHome: setHome,
   ));
 }
-
+class MyHttpOverrides extends HttpOverrides{
+  @override
+  HttpClient createHttpClient(SecurityContext? context){
+    return super.createHttpClient(context)
+      ..badCertificateCallback = (X509Certificate cert, String host, int port)=> true;
+  }
+}
 class MyApp extends StatelessWidget {
   bool setHome;
   MyApp({Key? key, required this.setHome}) : super(key: key);
@@ -56,6 +65,7 @@ class MyApp extends StatelessWidget {
           ),
         ],
         child: MaterialApp(
+           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
           theme: ThemeData(
             primarySwatch: Colors.blue,
